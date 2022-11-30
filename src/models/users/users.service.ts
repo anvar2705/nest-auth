@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './entity/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
-import { DeleteResult, Repository } from 'typeorm'
+import { DeleteResult, Repository, UpdateResult } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UsersService {
     return await this.userRepository.delete(id)
   }
 
-  async update(id: number, dto: UpdateUserDto) {
-    return this.userRepository.update(id, { ...dto })
+  async update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
+    return await this.userRepository.update(id, { ...dto })
   }
 }
