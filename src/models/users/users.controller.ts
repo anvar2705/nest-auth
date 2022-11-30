@@ -1,13 +1,24 @@
-import { Controller, Get, ParseIntPipe, Param, Post, Body, HttpCode, Delete } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  ParseIntPipe,
+  Param,
+  Post,
+  Body,
+  HttpCode,
+  Delete,
+  Patch,
+} from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
-  async findAll(): Promise<any> {
+  async findAll() {
     return this.userService.findAll()
   }
 
@@ -16,14 +27,19 @@ export class UsersController {
     return this.userService.findOne(Number(id))
   }
 
-  @Post(':id')
-  create(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateUserDto) {
-    return this.userService.create(Number(id), dto)
+  @Post()
+  create(@Body() dto: CreateUserDto) {
+    return this.userService.create(dto)
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    this.userService.remove(Number(id))
+  delete(@Param('id') id: string) {
+    this.userService.delete(Number(id))
+  }
+
+  @Patch(':id')
+  update(@Param('id', new ParseIntPipe()) id: string, @Body() dto: UpdateUserDto) {
+    return this.userService.update(Number(id), dto)
   }
 }
