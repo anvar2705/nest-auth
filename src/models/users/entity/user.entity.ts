@@ -4,11 +4,16 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 @Entity({ name: 'Users' })
 export class User {
   @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn() // TODO запретить обновлять id
+  // @Column({ type: 'int', nullable: false, unique: true, primary: true, readonly: true })
   id: number
 
-  @ApiProperty({ example: 'user@mail.ru', description: 'Email' })
+  @ApiProperty({ example: 'username', description: 'Ник пользователя' })
   @Column({ type: 'varchar', nullable: false, unique: true })
+  username: string
+
+  @ApiProperty({ example: 'user@mail.ru', description: 'Email' })
+  @Column({ type: 'varchar', nullable: true, unique: true })
   email: string
 
   @ApiProperty({ example: 'abcd12345', description: 'Пароль' })

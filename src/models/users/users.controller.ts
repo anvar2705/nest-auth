@@ -8,6 +8,7 @@ import {
   HttpCode,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common'
 import {
   ApiCreatedResponse,
@@ -30,15 +31,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Получение пользователей' })
   @ApiOkResponse({ type: [User] })
   @Get()
-  async findAll() {
-    return this.userService.findAll()
-  }
-
-  @ApiOperation({ summary: 'Получение пользователя по ID' })
-  @ApiOkResponse({ type: User })
-  @Get(':id')
-  findOne(@Param('id', new ParseIntPipe()) id: string) {
-    return this.userService.findOne(Number(id))
+  find(@Query('username') username: string) {
+    return username ? this.userService.findByUsername(username) : this.userService.findAll()
   }
 
   @ApiOperation({ summary: 'Создание пользователя' })

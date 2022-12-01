@@ -3,9 +3,13 @@ import { ConfigModule } from '@nestjs/config'
 import { UsersModule } from './models/users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { AuthModule } from './auth/auth.module'
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       name: 'nest-auth-connection',
       type: 'postgres',
@@ -18,6 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       synchronize: true, // TODO no prod
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
