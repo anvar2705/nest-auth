@@ -9,6 +9,7 @@ import {
   Delete,
   Patch,
   Query,
+  UseGuards,
 } from '@nestjs/common'
 import {
   ApiCreatedResponse,
@@ -23,6 +24,7 @@ import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entity/user.entity'
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard'
 
 @Controller('users')
 export class UsersController {
@@ -30,6 +32,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Получение пользователей' })
   @ApiOkResponse({ type: [User] })
+  @UseGuards(JwtAuthGuard)
   @Get()
   find(@Query('username') username: string) {
     return username ? this.userService.findByUsername(username) : this.userService.findAll()
