@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule } from '@nestjs/config'
-import { UsersModule } from './models/users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
+import { UsersModule, RolesModule } from './models'
+import { AppController } from './app.controller'
 
 @Module({
   imports: [
@@ -25,8 +26,9 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
     }),
     UsersModule,
     AuthModule,
+    RolesModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
