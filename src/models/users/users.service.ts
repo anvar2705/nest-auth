@@ -31,6 +31,27 @@ export class UsersService {
     return this.userRepository.findOneBy({ id })
   }
 
+  async _getUserWithPassword(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        email: true,
+        roles: true,
+        created_at: true,
+        updated_at: true,
+      },
+    })
+
+    if (!user) {
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND)
+    }
+
+    return user
+  }
+
   async create(dto: CreateUserDto): Promise<any> {
     const { roles, ...restDto } = dto
 

@@ -27,7 +27,7 @@ export class User {
   email: string
 
   @ApiProperty({ example: 'abcd12345', description: 'Пароль' })
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, select: false })
   password: string
 
   @ApiProperty({ example: '2022-11-30T11:57:56.572Z', description: 'Время создания' })
