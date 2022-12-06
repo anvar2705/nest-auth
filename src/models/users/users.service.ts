@@ -28,18 +28,52 @@ export class UsersService {
   }
 
   async create(dto: CreateUserDto): Promise<any> {
-    const userRole = await this.roleService.findByName('USER')
+    const { roles, ...restDto } = dto
+    const user = this.userRepository.create(restDto)
+    user.roles = []
 
-    const user = this.userRepository.create(dto)
-    if (userRole) {
-      user.roles = [userRole]
+    if (roles && roles.length > 0) {
+      for (const roleName of roles) {
+        const role = await this.roleService.findByName(roleName)
+        if (role) {
+          user.roles.push(role)
+        }
+      }
+    } else {
+      const userRole = await this.roleService.findByName('USER')
+      if (userRole) {
+        user.roles = [userRole]
+      }
     }
 
     return await this.userRepository.save(user)
   }
 
-  async update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
-    return await this.userRepository.update(id, { ...dto })
+  async update(id: number, dto: UpdateUserDto): Promise<User> {
+    const { roles, ...restDto } = dto
+
+    await this.userRepository.update(id, {
+      ...restDto,
+    })
+
+    const user = await this.findById(id)
+
+    if (roles) {
+      user.roles = []
+
+      if (roles.length > 0) {
+        for (const roleName of roles) {
+          const role = await this.roleService.findByName(roleName)
+          if (role) {
+            user.roles.push(role)
+          }
+        }
+      }
+
+      return await this.userRepository.save(user)
+    }
+
+    return user
   }
 
   async delete(id: number): Promise<DeleteResult> {

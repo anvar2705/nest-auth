@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator'
+import { IsArray, IsEmail, IsOptional, IsString, Length } from 'class-validator'
 
 export class CreateUserDto {
   @ApiProperty({ example: 'username', description: 'Ник пользователя' })
@@ -16,4 +16,9 @@ export class CreateUserDto {
   @Length(8, 20, { message: 'длина пароля должна быть не менее 8 и не более 20 символов' })
   @IsString({ message: 'должно быть строкой' })
   password: string
+
+  @ApiProperty({ example: ['USER', 'ADMIN'], description: 'Роли пользователя' })
+  @IsArray({ message: 'должно быть массивом' })
+  @IsOptional()
+  roles: string[]
 }

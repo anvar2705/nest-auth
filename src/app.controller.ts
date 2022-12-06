@@ -18,18 +18,21 @@ export class AppController {
       username: 'anvar2705',
       email: 'anvar978@yandex.ru',
       password: '123456789',
+      roles: ['ADMIN'],
     })
 
     await this.userServise.create({
       username: 'john',
       email: 'john@user.com',
       password: 'qwerty123',
+      roles: [],
     })
 
     await this.userServise.create({
       username: 'Kevin',
       email: 'KeViN@mail.ru',
       password: 'qazwsxedc123',
+      roles: [],
     })
   }
 }

@@ -17,7 +17,6 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'
 import { ApiResponse } from '@nestjs/swagger'
-import { UpdateResult } from 'typeorm'
 
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -30,7 +29,7 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @ApiOperation({ summary: 'Получение пользователей' })
-  @ApiOkResponse({ type: [User] })
+  @ApiOkResponse({ type: [User] || User || '' })
   @Get()
   find(@Query('username') username: string) {
     return username ? this.userService.findByUsername(username) : this.userService.findAll()
@@ -44,7 +43,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Обновление пользователя' })
-  @ApiResponse({ status: 200, type: UpdateResult })
+  @ApiResponse({ status: 200, type: User })
   @Patch(':id')
   update(@Param('id', new ParseIntPipe()) id: string, @Body() dto: UpdateUserDto) {
     return this.userService.update(Number(id), dto)
