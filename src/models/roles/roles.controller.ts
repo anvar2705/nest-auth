@@ -9,12 +9,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common'
-import { ApiNoContentResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { RolesService } from './roles.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { Role } from './entity/role.entity'
 
+@ApiTags('Роли')
 @Controller('roles')
 export class RolesController {
   constructor(private roleService: RolesService) {}

@@ -15,6 +15,7 @@ import {
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'
 import { ApiResponse } from '@nestjs/swagger'
 
@@ -24,6 +25,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entity/user.entity'
 import { CreateRoleDto } from '../roles/dto/create-role.dto'
 
+@ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}

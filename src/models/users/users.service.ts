@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { DeleteResult, Repository, UpdateResult } from 'typeorm'
+import { DeleteResult, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
@@ -23,26 +23,43 @@ export class UsersService {
     return this.userRepository.findOneBy({ username })
   }
 
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOneBy({ email })
+  }
+
   async findById(id: number): Promise<User> {
     return this.userRepository.findOneBy({ id })
   }
 
   async create(dto: CreateUserDto): Promise<any> {
     const { roles, ...restDto } = dto
+
+    if (dto.email) {
+      const sameEmailUser = await this.findByEmail(dto.email)
+      if (sameEmailUser) {
+        throw new HttpException('Пользователь с таким email существует', HttpStatus.BAD_REQUEST)
+      }
+    }
+
+    const sameUsernameUser = await this.findByUsername(dto.username)
+    if (sameUsernameUser) {
+      throw new HttpException('Пользователь с таким username существует', HttpStatus.BAD_REQUEST)
+    }
+
     const user = this.userRepository.create(restDto)
     user.roles = []
 
-    if (roles && roles.length > 0) {
+    if (!roles) {
+      const userRole = await this.roleService.findByName('USER')
+      if (userRole) {
+        user.roles = [userRole]
+      }
+    } else if (roles.length > 0) {
       for (const roleName of roles) {
         const role = await this.roleService.findByName(roleName)
         if (role) {
           user.roles.push(role)
         }
-      }
-    } else {
-      const userRole = await this.roleService.findByName('USER')
-      if (userRole) {
-        user.roles = [userRole]
       }
     }
 
