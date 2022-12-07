@@ -14,6 +14,7 @@ import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nes
 import { RolesService } from './roles.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { Role } from './entity/role.entity'
+import { Roles } from '../../auth/decorators'
 
 @ApiTags('Роли')
 @Controller('roles')
@@ -22,6 +23,7 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Получение ролей' })
   @ApiOkResponse({ type: [Role] })
+  @Roles('ADMIN')
   @Get()
   find() {
     return this.roleService.findAll()
@@ -29,6 +31,7 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Создание роли' })
   @ApiOkResponse({ type: Role })
+  @Roles('ADMIN')
   @Post()
   create(@Body() dto: CreateRoleDto) {
     return this.roleService.create(dto)
@@ -36,6 +39,7 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Обновление роли' })
   @ApiOkResponse({ type: Role })
+  @Roles('ADMIN')
   @Patch(':id')
   update(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
     return this.roleService.update(Number(id), dto)
@@ -43,6 +47,7 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Удаление роли' })
   @ApiNoContentResponse()
+  @Roles('ADMIN')
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseIntPipe()) id: string) {

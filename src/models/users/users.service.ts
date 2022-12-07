@@ -52,6 +52,7 @@ export class UsersService {
     return user
   }
 
+  // TODO запретить создание пользователя с ролью ADMIN
   async create(dto: CreateUserDto): Promise<any> {
     const { roles, ...restDto } = dto
 
