@@ -148,4 +148,18 @@ export class UsersService {
 
     throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND)
   }
+
+  async _createAdmin() {
+    const adminUser = await this.userRepository.findOneBy({ roles: { name: 'ADMIN' } })
+    if (!adminUser) {
+      const newAdminUser = await this.create({
+        username: 'admin',
+        password: '123456789',
+        email: '',
+        roles: [],
+      })
+
+      await this.addRole(newAdminUser.id, { name: 'ADMIN' })
+    }
+  }
 }

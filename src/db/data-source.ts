@@ -1,5 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
+// TODO env
 export const dataSourceOptions: DataSourceOptions = {
   name: 'nest-auth-connection',
   type: 'postgres',
@@ -10,7 +11,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: 'postgres',
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
-  synchronize: false, // !!! no true in production
+  synchronize: false, // !!! no true in production or with migrations
 }
 
 const dataSource = new DataSource(dataSourceOptions)

@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - ./src/common/envs/development.env
     command: npm run start:dev
     ports:
       - '5000:5000'

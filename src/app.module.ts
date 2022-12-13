@@ -7,7 +7,6 @@ import { getEnvPath } from 'common/helpers/env.helper'
 import { AuthModule } from './auth/auth.module'
 import { JwtAuthGuard, RolesGuard } from './auth/guards'
 import { UsersModule, RolesModule } from './models'
-import { AppController } from './app.controller'
 import { dataSourceOptions } from './db/data-source'
 
 @Module({
@@ -21,7 +20,6 @@ import { dataSourceOptions } from './db/data-source'
     AuthModule,
     RolesModule,
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,

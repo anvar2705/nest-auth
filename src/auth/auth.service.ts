@@ -6,7 +6,7 @@ import { UsersService } from '../models/users/users.service'
 import { CreateUserDto } from '../models/users/dto/create-user.dto'
 import { User } from '../models/users/entity/user.entity'
 
-// TODO если база пустая, то почему-то работает прежний токен для удаленного пользователя
+// TODO Почему работает старый токен для удаленного пользователя ?
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}

@@ -30,4 +30,16 @@ export class RolesService {
   async delete(id: number): Promise<DeleteResult> {
     return await this.roleRepository.delete(id)
   }
+
+  async _createInitialRoles() {
+    const adminRole = await this.findByName('ADMIN')
+    if (!adminRole) {
+      await this.create({ name: 'ADMIN' })
+    }
+
+    const userRole = await this.findByName('USER')
+    if (!userRole) {
+      await this.create({ name: 'USER' })
+    }
+  }
 }
