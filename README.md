@@ -1,12 +1,48 @@
+
 # NEST-AUTH
 
-## Установка зависимостей
+Backend-app for authentication and authorization.
+
+## Installation
+
+Clone the project
 
 ```bash
-$ npm install
+  git clone https://link-to-project
 ```
 
-### Приложение запускается на 5000 порту.
+Go to the project directory
+
+```bash
+  cd nest-auth
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+
+
+
+
+
+## If database is EMPTY
+
+Generate initial migration
+
+```bash
+  npm run migration:generate -- src/db/migrations/StartMigration
+```
+
+Run migration
+
+```bash
+  npm run migration:run
+```
+
+## Start the app (todo)
 
 ## 1 вариант: запуск api с помощью docker
 Нужно установить докер.
@@ -30,5 +66,5 @@ $ npm run docker-compose-down
 $ npm run start:dev
 ```
 
-## Swagger
+## Swagger docs
 ### localhost:5000/api/docs

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module'
 import { JwtAuthGuard, RolesGuard } from './auth/guards'
 import { UsersModule, RolesModule } from './models'
 import { AppController } from './app.controller'
+import { dataSourceOptions } from './db/data-source'
 
 @Module({
   imports: [
@@ -15,17 +16,7 @@ import { AppController } from './app.controller'
       envFilePath: getEnvPath(`${__dirname}/common/envs`),
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      name: 'nest-auth-connection',
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      autoLoadEntities: true,
-      synchronize: true, // TODO no prod
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
     AuthModule,
     RolesModule,
