@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { DeleteResult, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import * as bcrypt from 'bcryptjs'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './entity/user.entity'
@@ -54,7 +55,12 @@ export class UsersService {
 
   // TODO запретить создание пользователя с ролью ADMIN
   async create(dto: CreateUserDto): Promise<any> {
-    const { roles, ...restDto } = dto
+    const { roles, ...dtoWithoutRoles } = dto
+
+    const sameUsernameUser = await this.findByUsername(dto.username)
+    if (sameUsernameUser) {
+      throw new HttpException('Пользователь с таким username существует', HttpStatus.BAD_REQUEST)
+    }
 
     if (dto.email) {
       const sameEmailUser = await this.findByEmail(dto.email)
@@ -63,12 +69,8 @@ export class UsersService {
       }
     }
 
-    const sameUsernameUser = await this.findByUsername(dto.username)
-    if (sameUsernameUser) {
-      throw new HttpException('Пользователь с таким username существует', HttpStatus.BAD_REQUEST)
-    }
-
-    const user = this.userRepository.create(restDto)
+    const hashPassword = await bcrypt.hash(dto.password, 5)
+    const user = this.userRepository.create({ ...dtoWithoutRoles, password: hashPassword })
     user.roles = []
 
     if (!roles) {
@@ -85,14 +87,17 @@ export class UsersService {
       }
     }
 
-    return await this.userRepository.save(user)
+    const { password, ...savedUser } = await this.userRepository.save(user)
+    return savedUser
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {
-    const { roles, ...restDto } = dto
+    const { roles, ...dtoWithoutRoles } = dto
 
+    const hashPassword = await bcrypt.hash(dto.password, 5)
     await this.userRepository.update(id, {
-      ...restDto,
+      ...dtoWithoutRoles,
+      password: hashPassword,
     })
 
     const user = await this.findById(id)
