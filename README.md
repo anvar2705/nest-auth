@@ -1,48 +1,29 @@
 
 # NEST-AUTH
 
-Backend-app for authentication and authorization.
+Бекэнд приложение для аутентификации и авторизации.
 
-## Installation
+## Установка
 
-Clone the project
+Склонировать репозиторий
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/anvar2705/nest-auth.git
 ```
 
-Go to the project directory
+Перейти в директорию проекта
 
 ```bash
   cd nest-auth
 ```
 
-Install dependencies
+Установить зависимости
 
 ```bash
   npm install
 ```
 
-
-
-
-
-
-## If database is EMPTY
-
-Generate initial migration
-
-```bash
-  npm run migration:generate -- src/db/migrations/StartMigration
-```
-
-Run migration
-
-```bash
-  npm run migration:run
-```
-
-## Start the app (todo)
+## Запуск приложения
 
 ## 1 вариант: запуск api с помощью docker
 Нужно установить докер.
@@ -58,13 +39,45 @@ $ npm run docker-compose-down
 
 ## 2 вариант: запуск api локально
 Нужно установить базу данных postgres.
-В файле .env изменить значение POSTGRES_HOST=localhost (вместо db).
-Также изменить порт, пароль или название базы, если нужно.
+В файле src/db/data-source.ts изменить параметр host с 'db' на 'localhost'.
+Остальные параметры подключения к базе изменить в соответствии со своими.
+(.env не доделан).
 
 ```bash
 # Запустить
 $ npm run start:dev
 ```
 
-## Swagger docs
+## Документация Swagger
+
 ### localhost:5000/api/docs
+
+## Примечание
+Если база пустая, создаются стандартные роли (USER, ADMIN) и пользователь с правами
+админа (username: "admin", password: "123456789"). Все роуты, кроме роутов логина или регистрации,
+защищены авторизацией по роли админа.
+
+
+
+
+
+
+
+
+
+
+## (TODO)
+## If database is EMPTY
+
+Generate initial migration
+
+```bash
+  npm run migration:generate -- src/db/migrations/StartMigration
+```
+
+Run migration
+
+```bash
+  npm run migration:run
+```
+
