@@ -6,7 +6,7 @@ import { User } from 'models/users/entity/user.entity'
 @Entity()
 export class Role {
   @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
-  @PrimaryGeneratedColumn() // TODO запретить обновлять id
+  @PrimaryGeneratedColumn()
   id: number
 
   @ApiProperty({ example: 'ADMIN', description: 'Название роли' })
