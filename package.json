@@ -21,10 +21,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker-compose-up": "docker-compose up --build -d",
     "docker-compose-down": "docker-compose down",
-    "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
-    "migration:generate": "npm run typeorm -- migration:generate",
-    "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "typeorm": "typeorm-ts-node-commonjs -d dist/db/data-source.js",
+    "migration:create": "npm run build && typeorm-ts-node-commonjs migration:create",
+    "migration:generate": "npm run build && npm run typeorm migration:generate",
+    "migration:run": "npm run build && npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

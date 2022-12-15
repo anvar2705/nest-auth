@@ -11,7 +11,9 @@ export const dataSourceOptions: DataSourceOptions = {
   database: 'postgres',
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
-  synchronize: true, // !!! no true in production or with migrations
+  migrationsTableName: 'migrations',
+  migrationsRun: false,
+  synchronize: false,
 }
 
 const dataSource = new DataSource(dataSourceOptions)
