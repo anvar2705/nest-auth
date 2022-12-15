@@ -93,7 +93,8 @@ export class UsersService {
   async update(id: number, dto: UpdateUserDto): Promise<User> {
     const { roles, ...dtoWithoutRoles } = dto
 
-    const hashPassword = await bcrypt.hash(dto.password, 5)
+    const hashPassword = dto.password ? await bcrypt.hash(dto.password, 5) : undefined
+
     await this.userRepository.update(id, {
       ...dtoWithoutRoles,
       password: hashPassword,
@@ -151,19 +152,5 @@ export class UsersService {
     }
 
     throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND)
-  }
-
-  async _createAdmin() {
-    const adminUser = await this.userRepository.findOneBy({ roles: { name: 'ADMIN' } })
-    if (!adminUser) {
-      const newAdminUser = await this.create({
-        username: 'admin',
-        password: '123456789',
-        email: '',
-        roles: [],
-      })
-
-      await this.addRole(newAdminUser.id, { name: 'ADMIN' })
-    }
   }
 }

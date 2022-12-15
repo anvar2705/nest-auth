@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common'
 import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
+import { ExcludeIdPipe } from 'common/pipes'
 import { RolesService } from './roles.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { Role } from './entity/role.entity'
@@ -41,7 +42,10 @@ export class RolesController {
   @ApiOkResponse({ type: Role })
   @Roles('ADMIN')
   @Patch(':id')
-  update(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
+  update(
+    @Param('id', new ParseIntPipe()) id: string,
+    @Body(new ExcludeIdPipe()) dto: CreateRoleDto
+  ) {
     return this.roleService.update(Number(id), dto)
   }
 

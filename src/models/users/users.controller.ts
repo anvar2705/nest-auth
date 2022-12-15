@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger'
 import { ApiResponse } from '@nestjs/swagger'
 
+import { ExcludeIdPipe } from 'common/pipes'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -51,7 +52,11 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @Patch(':id')
-  update(@Param('id', new ParseIntPipe()) id: string, @Body() dto: UpdateUserDto) {
+  update(
+    @Param('id', new ParseIntPipe()) id: string,
+    @Body(new ExcludeIdPipe()) dto: UpdateUserDto
+  ) {
+    console.log(dto)
     return this.userService.update(Number(id), dto)
   }
 
