@@ -20,5 +20,5 @@ export class CreateUserDto {
   @ApiProperty({ example: ['USER', 'ADMIN'], description: 'Роли пользователя' })
   @IsArray({ message: 'должно быть массивом' })
   @IsOptional()
-  roles: string[]
+  roles?: string[]
 }

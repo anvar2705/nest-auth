@@ -30,7 +30,8 @@ export class AuthService {
   }
 
   async registration(userDto: CreateUserDto) {
-    const user = await this.usersService.create(userDto)
+    const { roles, ...userDtoWithoutRoles } = userDto
+    const user = await this.usersService.create(userDtoWithoutRoles)
     return this.generateToken(user)
   }
 }
