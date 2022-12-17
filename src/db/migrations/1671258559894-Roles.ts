@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 import { Role } from 'models/roles/entity/role.entity'
 
-export class Roles1671113882558 implements MigrationInterface {
+export class Roles1671258559894 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const adminRole = queryRunner.manager.create(Role, { name: 'ADMIN' })
     await queryRunner.manager.save(adminRole)

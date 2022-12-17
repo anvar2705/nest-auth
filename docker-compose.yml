@@ -6,16 +6,14 @@ services:
     depends_on:
       - db
       - migration
-#    env_file:
-#      - .env
-    command: npm run start:dev
+    command: npm run start:prod
     ports:
       - '5000:5000'
   migration:
     build: .
     depends_on:
       - db
-    command: npm run migration:run
+    command: npm run migration:run:prod
   db:
     image: 'postgres'
     restart: always

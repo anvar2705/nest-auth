@@ -1,20 +1,9 @@
-import { DataSource, DataSourceOptions } from 'typeorm'
+import { DataSource } from 'typeorm'
+import dbConfiguration from './data-source.config'
+import { getEnvPath } from 'common/helpers/env.helper'
+import * as dotenv from 'dotenv'
 
-// TODO env
-export const dataSourceOptions: DataSourceOptions = {
-  name: 'nest-auth-connection',
-  type: 'postgres',
-  host: 'db', // if docker - "db", if local database - "localhost"
-  port: 5432,
-  username: 'postgres',
-  password: 'root123',
-  database: 'postgres',
-  entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/db/migrations/*.js'],
-  migrationsTableName: 'migrations',
-  migrationsRun: false,
-  synchronize: false,
-}
+dotenv.config({ path: getEnvPath(`${__dirname}/../common/envs`) })
 
-const dataSource = new DataSource(dataSourceOptions)
+const dataSource = new DataSource(dbConfiguration())
 export default dataSource

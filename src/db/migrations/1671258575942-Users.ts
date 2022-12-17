@@ -3,7 +3,7 @@ import * as bcrypt from 'bcryptjs'
 import { Role } from 'models/roles/entity/role.entity'
 import { User } from 'models/users/entity/user.entity'
 
-export class Users1671114354653 implements MigrationInterface {
+export class Users1671258575942 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const defaultPassword = await bcrypt.hash('123456789', 5)
 
