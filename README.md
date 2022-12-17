@@ -8,19 +8,19 @@
 Склонировать репозиторий
 
 ```bash
-  git clone https://github.com/anvar2705/nest-auth.git
+git clone https://github.com/anvar2705/nest-auth.git
 ```
 
 Перейти в директорию проекта
 
 ```bash
-  cd nest-auth
+cd nest-auth
 ```
 
 Установить зависимости
 
 ```bash
-  npm install
+npm install
 ```
 
 ## Запуск приложения
@@ -31,10 +31,10 @@
 
 ```bash
 # Запустить
-$ npm run docker-start
+npm run docker-start
 
 # Остановить 
-$ npm run docker-stop
+npm run docker-stop
 ```
 
 ### 2 вариант: запуск api локально
@@ -44,10 +44,10 @@ $ npm run docker-stop
 ```bash
 # Запустить миграции для создания таблиц в базе,
 # дефолтных ролей и пользователя с правами админа
-$ npm run migration:run
+npm run migration:run
 
 # Запустить приложение
-$ npm run start:dev
+npm run start:dev
 ```
 
 ## Документация Swagger
@@ -77,6 +77,6 @@ npm run migration:create src/db/migrations/MigrationName
 Run migration
 
 ```bash
-  npm run migration:run
+npm run migration:run
 ```
 
