@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { DeleteResult, Repository, UpdateResult } from 'typeorm'
 import { Role } from './entity/role.entity'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -19,6 +19,10 @@ export class RolesService {
   }
 
   async create(dto: CreateRoleDto): Promise<Role> {
+    const sameNameRole = await this.roleRepository.findOneBy({ name: dto.name })
+    if (sameNameRole) {
+      throw new HttpException('Данная роль уже существует', HttpStatus.BAD_REQUEST)
+    }
     const role = this.roleRepository.create(dto)
     return this.roleRepository.save(role)
   }

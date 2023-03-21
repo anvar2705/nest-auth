@@ -15,7 +15,7 @@ import { ExcludeIdPipe } from 'common/pipes'
 import { RolesService } from './roles.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { Role } from './entity/role.entity'
-import { Roles } from '../../auth/decorators'
+import { Roles } from 'auth/decorators'
 
 @ApiTags('Роли')
 @Controller('roles')
