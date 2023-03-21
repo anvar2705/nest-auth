@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common'
-import { APP_GUARD } from '@nestjs/core'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { getEnvPath } from 'common/helpers/env.helper'
-import { AuthModule } from './auth/auth.module'
-import { JwtAuthGuard, RolesGuard } from './auth/guards'
-import { UsersModule, RolesModule } from './models'
-import dbConfiguration from './db/data-source.config'
+import { getEnvPath } from 'common/helpers/env.helper';
+
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard, RolesGuard } from './auth/guards';
+import dbConfiguration from './db/data-source.config';
+import { UsersModule, RolesModule } from './models';
 
 @Module({
   imports: [

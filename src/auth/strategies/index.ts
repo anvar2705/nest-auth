@@ -1,4 +1,4 @@
-import { LocalStrategy } from './local.strategy'
-import { JwtStrategy } from './jwt.strategy'
+import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy';
 
-export { LocalStrategy, JwtStrategy }
+export { LocalStrategy, JwtStrategy };

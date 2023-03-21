@@ -1,12 +1,13 @@
-import { forwardRef, Module } from '@nestjs/common'
-import { PassportModule } from '@nestjs/passport'
-import { JwtModule } from '@nestjs/jwt'
-import { ConfigService } from '@nestjs/config'
+import { forwardRef, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
-import { AuthService } from './auth.service'
-import { UsersModule } from '../models'
-import { AuthController } from './auth.controller'
-import { LocalStrategy, JwtStrategy } from './strategies'
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { LocalStrategy, JwtStrategy } from './strategies';
+// eslint-disable-next-line import/no-cycle
+import { UsersModule } from '../models';
 
 @Module({
   imports: [

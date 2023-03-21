@@ -1,5 +1,5 @@
-import { registerAs } from '@nestjs/config'
-import { DataSourceOptions } from 'typeorm'
+import { registerAs } from '@nestjs/config';
+import { DataSourceOptions } from 'typeorm';
 
 export default registerAs(
   'database',
@@ -16,5 +16,5 @@ export default registerAs(
     migrationsTableName: 'migrations',
     migrationsRun: false,
     synchronize: false,
-  })
-)
+  }),
+);

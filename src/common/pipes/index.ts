@@ -1,3 +1,3 @@
-import { ExcludeIdPipe } from './excludeId.pipe'
+import { ExcludeIdPipe } from './excludeId.pipe';
 
-export { ExcludeIdPipe }
+export { ExcludeIdPipe };

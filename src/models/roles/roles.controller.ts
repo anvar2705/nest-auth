@@ -8,14 +8,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-} from '@nestjs/common'
-import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+} from '@nestjs/common';
+import {
+  ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags,
+} from '@nestjs/swagger';
 
-import { ExcludeIdPipe } from 'common/pipes'
-import { RolesService } from './roles.service'
-import { CreateRoleDto } from './dto/create-role.dto'
-import { Role } from './entity/role.entity'
-import { Roles } from 'auth/decorators'
+import { Roles } from 'auth/decorators';
+import { ExcludeIdPipe } from 'common/pipes';
+
+import { CreateRoleDto } from './dto/create-role.dto';
+import { Role } from './entity/role.entity';
+import { RolesService } from './roles.service';
 
 @ApiTags('Роли')
 @Controller('roles')
@@ -27,7 +30,7 @@ export class RolesController {
   @Roles('ADMIN')
   @Get()
   find() {
-    return this.roleService.findAll()
+    return this.roleService.findAll();
   }
 
   @ApiOperation({ summary: 'Создание роли' })
@@ -35,7 +38,7 @@ export class RolesController {
   @Roles('ADMIN')
   @Post()
   create(@Body() dto: CreateRoleDto) {
-    return this.roleService.create(dto)
+    return this.roleService.create(dto);
   }
 
   @ApiOperation({ summary: 'Обновление роли' })
@@ -43,10 +46,10 @@ export class RolesController {
   @Roles('ADMIN')
   @Patch(':id')
   update(
-    @Param('id', new ParseIntPipe()) id: string,
-    @Body(new ExcludeIdPipe()) dto: CreateRoleDto
+  @Param('id', new ParseIntPipe()) id: string,
+    @Body(new ExcludeIdPipe()) dto: CreateRoleDto,
   ) {
-    return this.roleService.update(Number(id), dto)
+    return this.roleService.update(Number(id), dto);
   }
 
   @ApiOperation({ summary: 'Удаление роли' })
@@ -55,6 +58,6 @@ export class RolesController {
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseIntPipe()) id: string) {
-    return this.roleService.delete(Number(id))
+    return this.roleService.delete(Number(id));
   }
 }

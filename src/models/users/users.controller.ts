@@ -9,23 +9,24 @@ import {
   Delete,
   Patch,
   Query,
-} from '@nestjs/common'
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-} from '@nestjs/swagger'
-import { ApiResponse } from '@nestjs/swagger'
+  ApiResponse,
+} from '@nestjs/swagger';
 
-import { ExcludeIdPipe } from 'common/pipes'
-import { UsersService } from './users.service'
-import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
-import { User } from './entity/user.entity'
-import { CreateRoleDto } from '../roles/dto/create-role.dto'
-import { Roles } from 'auth/decorators'
+import { Roles } from 'auth/decorators';
+import { ExcludeIdPipe } from 'common/pipes';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entity/user.entity';
+import { UsersService } from './users.service';
+import { CreateRoleDto } from '../roles/dto/create-role.dto';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -37,7 +38,7 @@ export class UsersController {
   @Roles('ADMIN')
   @Get()
   find(@Query('username') username: string) {
-    return username ? this.userService.findByUsername(username) : this.userService.findAll()
+    return username ? this.userService.findByUsername(username) : this.userService.findAll();
   }
 
   @ApiOperation({ summary: 'Создание пользователя' })
@@ -45,7 +46,7 @@ export class UsersController {
   @Roles('ADMIN')
   @Post()
   create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto)
+    return this.userService.create(dto);
   }
 
   @ApiOperation({ summary: 'Обновление пользователя' })
@@ -53,11 +54,10 @@ export class UsersController {
   @Roles('ADMIN')
   @Patch(':id')
   update(
-    @Param('id', new ParseIntPipe()) id: string,
-    @Body(new ExcludeIdPipe()) dto: UpdateUserDto
+  @Param('id', new ParseIntPipe()) id: string,
+    @Body(new ExcludeIdPipe()) dto: UpdateUserDto,
   ) {
-    console.log(dto)
-    return this.userService.update(Number(id), dto)
+    return this.userService.update(Number(id), dto);
   }
 
   @ApiOperation({ summary: 'Удаление пользователя' })
@@ -66,7 +66,7 @@ export class UsersController {
   @Delete(':id')
   @HttpCode(204)
   delete(@Param('id', new ParseIntPipe()) id: string) {
-    this.userService.delete(Number(id))
+    this.userService.delete(Number(id));
   }
 
   @ApiOperation({ summary: 'Добавление роли пользователю' })
@@ -74,7 +74,7 @@ export class UsersController {
   @Roles('ADMIN')
   @Patch(':id/role')
   addRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
-    return this.userService.addRole(Number(id), dto)
+    return this.userService.addRole(Number(id), dto);
   }
 
   @ApiOperation({ summary: 'Удаление роли пользователя' })
@@ -82,6 +82,6 @@ export class UsersController {
   @Roles('ADMIN')
   @Delete(':id/role')
   removeRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
-    return this.userService.removeRole(Number(id), dto)
+    return this.userService.removeRole(Number(id), dto);
   }
 }

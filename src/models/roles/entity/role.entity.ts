@@ -1,18 +1,21 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  Column, Entity, ManyToMany, PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { User } from 'models/users/entity/user.entity'
+// eslint-disable-next-line import/no-cycle
+import { User } from 'models/users/entity/user.entity';
 
 @Entity()
 export class Role {
   @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
   @PrimaryGeneratedColumn()
-  id: number
+    id: number;
 
   @ApiProperty({ example: 'ADMIN', description: 'Название роли' })
   @Column({ type: 'varchar', nullable: false, unique: true })
-  name: string
+    name: string;
 
   @ManyToMany(() => User, (user) => user.roles)
-  users: User[]
+    users: User[];
 }

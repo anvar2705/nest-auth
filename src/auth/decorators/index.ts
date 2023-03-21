@@ -1,4 +1,4 @@
-import { Public } from './public.decorator'
-import { Roles } from './roles.decorator'
+import { Public } from './public.decorator';
+import { Roles } from './roles.decorator';
 
-export { Public, Roles }
+export { Public, Roles };
