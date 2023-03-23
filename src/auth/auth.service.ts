@@ -36,4 +36,8 @@ export class AuthService {
     const user = await this.usersService.create(userDtoWithoutRoles);
     return this.generateToken(user);
   }
+
+  async getUserInfo(user: { id: number, username: string }) {
+    return this.usersService.findById(user.id);
+  }
 }
