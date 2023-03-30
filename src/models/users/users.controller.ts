@@ -41,6 +41,14 @@ export class UsersController {
     return username ? this.userService.findByUsername(username) : this.userService.findAll();
   }
 
+  @ApiOperation({ summary: 'Получение пользователя по id' })
+  @ApiOkResponse({ type: User || '' })
+  @Roles('ADMIN')
+  @Get(':id')
+  findById(@Param('id', new ParseIntPipe()) id: string) {
+    return this.userService.findById(Number(id));
+  }
+
   @ApiOperation({ summary: 'Создание пользователя' })
   @ApiCreatedResponse({ type: User })
   @Roles('ADMIN')
