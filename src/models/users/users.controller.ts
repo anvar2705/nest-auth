@@ -22,11 +22,11 @@ import {
 import { Roles } from 'auth/decorators';
 import { ExcludeIdPipe } from 'common/pipes';
 
+import { AddRoleDto } from './dto/add-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
 import { UsersService } from './users.service';
-import { CreateRoleDto } from '../roles/dto/create-role.dto';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -73,7 +73,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @Patch(':id/role')
-  addRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
+  addRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: AddRoleDto) {
     return this.userService.addRole(Number(id), dto);
   }
 
@@ -81,7 +81,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @Delete(':id/role')
-  removeRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: CreateRoleDto) {
+  removeRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: AddRoleDto) {
     return this.userService.removeRole(Number(id), dto);
   }
 }

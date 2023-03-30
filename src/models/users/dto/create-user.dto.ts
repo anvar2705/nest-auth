@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsArray, IsEmail, IsOptional, IsString, Length,
+  IsArray,
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -19,8 +24,9 @@ export class CreateUserDto {
   @IsString({ message: 'должно быть строкой' })
     password: string;
 
-  @ApiProperty({ example: ['USER', 'ADMIN'], description: 'Роли пользователя' })
+  @ApiProperty({ example: [1, 2], description: 'Роли пользователя' })
   @IsArray({ message: 'должно быть массивом' })
+  @IsNumber({}, { each: true, message: 'должен быть массив number' })
   @IsOptional()
-    roles?: string[];
+    roles?: number[];
 }

@@ -15,6 +15,10 @@ export class RolesService {
     return this.roleRepository.find();
   }
 
+  async findById(id: number): Promise<Role> {
+    return this.roleRepository.findOneBy({ id });
+  }
+
   async findByName(name: string): Promise<Role> {
     return this.roleRepository.findOneBy({ name });
   }

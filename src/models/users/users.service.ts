@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { DeleteResult, Repository } from 'typeorm';
 
+import { AddRoleDto } from './dto/add-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
-import { CreateRoleDto } from '../roles/dto/create-role.dto';
 import { RolesService } from '../roles/roles.service';
 
 @Injectable()
@@ -79,9 +79,9 @@ export class UsersService {
       }
     } else if (roles.length > 0) {
       // eslint-disable-next-line no-restricted-syntax
-      for (const roleName of roles) {
+      for (const roleId of roles) {
         // eslint-disable-next-line no-await-in-loop
-        const role = await this.roleService.findByName(roleName);
+        const role = await this.roleService.findById(roleId);
         if (role) {
           user.roles.push(role);
         }
@@ -109,9 +109,9 @@ export class UsersService {
 
       if (roles.length > 0) {
         // eslint-disable-next-line no-restricted-syntax
-        for (const roleName of roles) {
+        for (const roleId of roles) {
           // eslint-disable-next-line no-await-in-loop
-          const role = await this.roleService.findByName(roleName);
+          const role = await this.roleService.findById(roleId);
           if (role) {
             user.roles.push(role);
           }
@@ -128,9 +128,9 @@ export class UsersService {
     return this.userRepository.delete(id);
   }
 
-  async addRole(id: number, roleDto: CreateRoleDto) {
+  async addRole(id: number, addRoleDto: AddRoleDto) {
     const user = await this.findById(id);
-    const role = await this.roleService.findByName(roleDto.name);
+    const role = await this.roleService.findById(addRoleDto.roleId);
 
     if (user && role) {
       if (user.roles.findIndex((currentRole) => currentRole.id === role.id) === -1) {
@@ -143,9 +143,9 @@ export class UsersService {
     throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND);
   }
 
-  async removeRole(id: number, roleDto: CreateRoleDto) {
+  async removeRole(id: number, addRoleDto: AddRoleDto) {
     const user = await this.findById(id);
-    const role = await this.roleService.findByName(roleDto.name);
+    const role = await this.roleService.findById(addRoleDto.roleId);
 
     if (user && role) {
       if (user.roles.findIndex((currentRole) => currentRole.id === role.id) !== -1) {
