@@ -25,6 +25,6 @@ export class CreateUserDto {
   @ApiProperty({ example: [1, 2], description: 'Роли пользователя' })
   @IsOptional()
   @IsArray()
-  @IsNumber()
+  @IsNumber({}, { each: true })
     roles?: number[];
 }
