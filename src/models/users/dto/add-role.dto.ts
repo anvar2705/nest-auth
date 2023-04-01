@@ -3,6 +3,6 @@ import { IsNumber } from 'class-validator';
 
 export class AddRoleDto {
   @ApiProperty({ example: 1, description: 'ID роли' })
-  @IsNumber({}, { message: 'должно быть number' })
+  @IsNumber()
     roleId: number;
 }

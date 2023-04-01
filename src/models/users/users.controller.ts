@@ -24,6 +24,7 @@ import { ExcludeIdPipe } from 'common/pipes';
 
 import { AddRoleDto } from './dto/add-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindAllQueryDto } from './dto/find-all-query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
 import { UsersService } from './users.service';
@@ -37,16 +38,18 @@ export class UsersController {
   @ApiOkResponse({ type: [User] || User || '' })
   @Roles('ADMIN')
   @Get()
-  find(@Query('username') username: string) {
-    return username ? this.userService.findByUsername(username) : this.userService.findAll();
+  find(@Query() query: FindAllQueryDto) {
+    return query.username
+      ? this.userService.findByUsername(query.username)
+      : this.userService.findAll(query.page, query.per_page);
   }
 
   @ApiOperation({ summary: 'Получение пользователя по id' })
   @ApiOkResponse({ type: User || '' })
   @Roles('ADMIN')
   @Get(':id')
-  findById(@Param('id', new ParseIntPipe()) id: string) {
-    return this.userService.findById(Number(id));
+  findById(@Param('id', new ParseIntPipe()) id: number) {
+    return this.userService.findById(id);
   }
 
   @ApiOperation({ summary: 'Создание пользователя' })
@@ -62,10 +65,10 @@ export class UsersController {
   @Roles('ADMIN')
   @Patch(':id')
   update(
-  @Param('id', new ParseIntPipe()) id: string,
+  @Param('id', new ParseIntPipe()) id: number,
     @Body(new ExcludeIdPipe()) dto: UpdateUserDto,
   ) {
-    return this.userService.update(Number(id), dto);
+    return this.userService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Удаление пользователя' })
@@ -73,23 +76,23 @@ export class UsersController {
   @Roles('ADMIN')
   @Delete(':id')
   @HttpCode(204)
-  delete(@Param('id', new ParseIntPipe()) id: string) {
-    this.userService.delete(Number(id));
+  delete(@Param('id', new ParseIntPipe()) id: number) {
+    return this.userService.delete(id);
   }
 
   @ApiOperation({ summary: 'Добавление роли пользователю' })
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @Patch(':id/role')
-  addRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: AddRoleDto) {
-    return this.userService.addRole(Number(id), dto);
+  addRole(@Param('id', new ParseIntPipe()) id: number, @Body() dto: AddRoleDto) {
+    return this.userService.addRole(id, dto);
   }
 
   @ApiOperation({ summary: 'Удаление роли пользователя' })
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @Delete(':id/role')
-  removeRole(@Param('id', new ParseIntPipe()) id: string, @Body() dto: AddRoleDto) {
-    return this.userService.removeRole(Number(id), dto);
+  removeRole(@Param('id', new ParseIntPipe()) id: number, @Body() dto: AddRoleDto) {
+    return this.userService.removeRole(id, dto);
   }
 }

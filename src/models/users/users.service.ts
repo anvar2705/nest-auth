@@ -9,6 +9,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
 import { RolesService } from '../roles/roles.service';
 
+import type { WithPagination } from 'common/types';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -16,8 +18,14 @@ export class UsersService {
     private roleService: RolesService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(page: number, per_page: number): Promise<WithPagination<User>> {
+    const offset = (page - 1) * per_page;
+    const [items, total] = await this.userRepository.findAndCount({
+      take: per_page,
+      skip: offset,
+    });
+
+    return { total, offset, items };
   }
 
   async findByUsername(username: string): Promise<User> {

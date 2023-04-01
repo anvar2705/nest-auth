@@ -51,6 +51,12 @@ module.exports = {
         "multilineDetection": "brackets"
       }
     ],
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreProperties": true
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

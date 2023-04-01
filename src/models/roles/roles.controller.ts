@@ -46,10 +46,10 @@ export class RolesController {
   @Roles('ADMIN')
   @Patch(':id')
   update(
-  @Param('id', new ParseIntPipe()) id: string,
+  @Param('id', new ParseIntPipe()) id: number,
     @Body(new ExcludeIdPipe()) dto: CreateRoleDto,
   ) {
-    return this.roleService.update(Number(id), dto);
+    return this.roleService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Удаление роли' })
@@ -57,7 +57,7 @@ export class RolesController {
   @Roles('ADMIN')
   @Delete(':id')
   @HttpCode(204)
-  delete(@Param('id', new ParseIntPipe()) id: string) {
-    return this.roleService.delete(Number(id));
+  delete(@Param('id', new ParseIntPipe()) id: number) {
+    return this.roleService.delete(id);
   }
 }
