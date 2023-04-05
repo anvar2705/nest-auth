@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { DeleteResult, Repository } from 'typeorm';
 
+import { CODES } from 'common/constants';
+
 import { AddRoleDto } from './dto/add-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -64,17 +66,7 @@ export class UsersService {
   async create(dto: CreateUserDto): Promise<any> {
     const { roles, ...dtoWithoutRoles } = dto;
 
-    const sameUsernameUser = await this.findByUsername(dto.username);
-    if (sameUsernameUser) {
-      throw new HttpException('Пользователь с таким username существует', HttpStatus.BAD_REQUEST);
-    }
-
-    if (dto.email) {
-      const sameEmailUser = await this.findByEmail(dto.email);
-      if (sameEmailUser) {
-        throw new HttpException('Пользователь с таким email существует', HttpStatus.BAD_REQUEST);
-      }
-    }
+    await this.validateUser(dto.username, dto.email);
 
     const hashPassword = await bcrypt.hash(dto.password, 5);
     const user = this.userRepository.create({ ...dtoWithoutRoles, password: hashPassword });
@@ -102,6 +94,8 @@ export class UsersService {
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {
     const { roles, ...dtoWithoutRoles } = dto;
+
+    await this.validateUser(dto.username, dto.email, id);
 
     const hashPassword = dto.password ? await bcrypt.hash(dto.password, 5) : undefined;
 
@@ -164,5 +158,35 @@ export class UsersService {
     }
 
     throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND);
+  }
+
+  async validateUser(username: string, email?: string, id?: number) {
+    let currentUsername;
+    let currentEmail;
+    if (id !== undefined) {
+      const currenUser = await this.findById(id);
+      currentUsername = currenUser.username;
+      currentEmail = currenUser.email;
+    }
+
+    if (username !== currentUsername) {
+      const sameUsernameUser = await this.findByUsername(username);
+      if (sameUsernameUser) {
+        throw new HttpException(
+          { message: 'Пользователь с таким username существует', code: CODES.USER_SAME_USERNAME_EXISTS },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
+    if (email && email !== currentEmail) {
+      const sameEmailUser = await this.findByEmail(email);
+      if (sameEmailUser) {
+        throw new HttpException(
+          { message: 'Пользователь с таким email существует', code: CODES.USER_SAME_EMAIL_EXISTS },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 }
