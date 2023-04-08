@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags,
@@ -17,6 +18,7 @@ import { Roles } from 'auth/decorators';
 import { ExcludeIdPipe } from 'common/pipes';
 
 import { CreateRoleDto } from './dto/create-role.dto';
+import { FindAllQueryDto } from './dto/find-all-query.dto';
 import { Role } from './entity/role.entity';
 import { RolesService } from './roles.service';
 
@@ -29,8 +31,8 @@ export class RolesController {
   @ApiOkResponse({ type: [Role] })
   @Roles('ADMIN')
   @Get()
-  find() {
-    return this.roleService.findAll();
+  find(@Query() query: FindAllQueryDto) {
+    return this.roleService.findAll(query.page, query.per_page);
   }
 
   @ApiOperation({ summary: 'Создание роли' })

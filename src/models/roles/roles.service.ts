@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import { CODES } from 'common/constants';
+import { WithPagination } from 'common/types';
 
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entity/role.entity';
@@ -13,8 +14,14 @@ export class RolesService {
     @InjectRepository(Role, 'nest-auth-connection') private roleRepository: Repository<Role>,
   ) {}
 
-  async findAll(): Promise<Role[]> {
-    return this.roleRepository.find();
+  async findAll(page: number, per_page: number): Promise<WithPagination<Role>> {
+    const offset = (page - 1) * per_page;
+    const [items, total] = await this.roleRepository.findAndCount({
+      take: per_page,
+      skip: offset,
+    });
+
+    return { total, offset, items };
   }
 
   async findById(id: number): Promise<Role> {
