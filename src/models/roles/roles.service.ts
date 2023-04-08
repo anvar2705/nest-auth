@@ -6,6 +6,7 @@ import { CODES } from 'common/constants';
 import { WithPagination } from 'common/types';
 
 import { CreateRoleDto } from './dto/create-role.dto';
+import { FindAllQueryDto } from './dto/find-all-query.dto';
 import { Role } from './entity/role.entity';
 
 @Injectable()
@@ -14,14 +15,21 @@ export class RolesService {
     @InjectRepository(Role, 'nest-auth-connection') private roleRepository: Repository<Role>,
   ) {}
 
-  async findAll(page: number, per_page: number): Promise<WithPagination<Role>> {
-    const offset = (page - 1) * per_page;
-    const [items, total] = await this.roleRepository.findAndCount({
-      take: per_page,
-      skip: offset,
-    });
+  async findAll(params: FindAllQueryDto): Promise<WithPagination<Role>> {
+    const { per_page, page } = params;
 
-    return { total, offset, items };
+    if (page) {
+      const offset = (page - 1) * per_page;
+      const [items, total] = await this.roleRepository.findAndCount({
+        take: per_page,
+        skip: offset,
+      });
+
+      return { total, offset, items };
+    }
+    const [items, total] = await this.roleRepository.findAndCount();
+
+    return { total, offset: 0, items };
   }
 
   async findById(id: number): Promise<Role> {

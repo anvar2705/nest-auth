@@ -56,7 +56,8 @@ module.exports = {
       {
         "ignoreProperties": true
       }
-    ]
+    ],
+    "@typescript-eslint/naming-convention": "off"
   },
   "settings": {
     "import/resolver": {

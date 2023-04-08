@@ -32,7 +32,7 @@ export class RolesController {
   @Roles('ADMIN')
   @Get()
   find(@Query() query: FindAllQueryDto) {
-    return this.roleService.findAll(query.page, query.per_page);
+    return this.roleService.findAll({ per_page: query.per_page, page: query.page });
   }
 
   @ApiOperation({ summary: 'Создание роли' })

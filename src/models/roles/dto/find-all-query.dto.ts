@@ -4,7 +4,7 @@ export class FindAllQueryDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-    page: number = 1;
+    page?: number;
 
   @IsOptional()
   @IsInt()
