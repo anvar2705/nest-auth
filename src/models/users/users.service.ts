@@ -23,6 +23,9 @@ export class UsersService {
   async findAll(page: number, per_page: number): Promise<WithPagination<User>> {
     const offset = (page - 1) * per_page;
     const [items, total] = await this.userRepository.findAndCount({
+      order: {
+        id: 'ASC',
+      },
       take: per_page,
       skip: offset,
     });

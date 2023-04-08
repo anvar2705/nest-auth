@@ -21,13 +21,21 @@ export class RolesService {
     if (page) {
       const offset = (page - 1) * per_page;
       const [items, total] = await this.roleRepository.findAndCount({
+        order: {
+          id: 'ASC',
+        },
         take: per_page,
         skip: offset,
       });
 
       return { total, offset, items };
     }
-    const [items, total] = await this.roleRepository.findAndCount();
+
+    const [items, total] = await this.roleRepository.findAndCount({
+      order: {
+        id: 'ASC',
+      },
+    });
 
     return { total, offset: 0, items };
   }
@@ -41,22 +49,37 @@ export class RolesService {
   }
 
   async create(dto: CreateRoleDto): Promise<Role> {
-    const sameNameRole = await this.roleRepository.findOneBy({ name: dto.name });
-    if (sameNameRole) {
-      throw new HttpException(
-        { message: 'Данная роль уже существует', code: CODES.ROLE_SAME_ROLE_EXISTS },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    await this.validateRole(dto.name);
+
     const role = this.roleRepository.create(dto);
     return this.roleRepository.save(role);
   }
 
   async update(id: number, dto: CreateRoleDto): Promise<UpdateResult> {
+    await this.validateRole(dto.name, id);
+
     return this.roleRepository.update(id, { ...dto });
   }
 
   async delete(id: number): Promise<DeleteResult> {
     return this.roleRepository.delete(id);
+  }
+
+  async validateRole(name: string, id?: number) {
+    let currentName;
+    if (id !== undefined) {
+      const currenRole = await this.findById(id);
+      currentName = currenRole.name;
+    }
+
+    if (name !== currentName) {
+      const sameNameRole = await this.findByName(name);
+      if (sameNameRole) {
+        throw new HttpException(
+          { message: 'Данная роль уже существует', code: CODES.ROLE_SAME_ROLE_EXISTS },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 }
